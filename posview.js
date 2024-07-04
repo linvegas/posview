@@ -12,6 +12,7 @@ function handleOverlayClick(event, imgViewer) {
 /** @param {MouseEvent & {target: HTMLImageElement}} event */
 function openImageView(event) {
     const overlay = document.createElement("div");
+    const closeBtn = document.createElement("button");
     const viewerImg = document.createElement("img");
 
     viewerImg.src = event.target.src;
@@ -43,7 +44,6 @@ function openImageView(event) {
     viewerImg.style.position = "absolute";
     viewerImg.style.left = viewerImgX + "px";
     viewerImg.style.top = viewerImgY + "px";
-    // viewerImg.style.transition = "width 150ms ease-in-out, height 150ms ease-in-out";
 
     overlay.style.position = "fixed";
     overlay.style.inset = "0";
@@ -51,10 +51,24 @@ function openImageView(event) {
     overlay.style.height = "100%";
     overlay.style.backgroundColor = "rgba(0, 0, 0, 0.75)";
 
+    closeBtn.textContent = "X";
+    closeBtn.title = "Close image";
+    closeBtn.style.fontSize = "1.75rem";
+    closeBtn.style.position = "fixed";
+    closeBtn.style.top = "1.5rem";
+    closeBtn.style.right = "1.5rem";
+    closeBtn.style.width = "3rem";
+    closeBtn.style.aspectRatio = "1/1";
+    closeBtn.style.borderRadius = "50%";
+    closeBtn.style.border = "2px solid grey";
+    closeBtn.style.cursor = "pointer";
+
     overlay.appendChild(viewerImg);
+    overlay.appendChild(closeBtn);
     document.body.appendChild(overlay);
 
     overlay.addEventListener("click", e => handleOverlayClick(e, viewerImg));
+    closeBtn.addEventListener("click", () => overlay.remove());
 
     let mouseIsDown = false;
     // let startX = 0;
@@ -87,7 +101,7 @@ function openImageView(event) {
 
             e.target.style.cursor = "move";
         } else {
-            e.target.style.cursor = "auto";
+            e.target.style.cursor = "grab";
         }
     });
 
